@@ -19,6 +19,7 @@ export async function getActivityLogsByUser(
 }
 
 export async function createActivityLog(request: ActivityLogRequest): Promise<ActivityLogResponse> {
+    console.log("create request",request)
     try {
         const res = await axios.post<ActivityLogResponse>(
             `${API_BASE_URL}/logs`,

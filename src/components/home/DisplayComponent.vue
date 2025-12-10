@@ -3,6 +3,8 @@
         <h2>Student Activity Tracker</h2>
 
         <div class="activities-top">
+            <button class="create-btn" @click="showCreateModal = true">Create Activity</button>
+            
             <!-- Activity Type Filter -->
             <select v-model="selectedTypeId">
                 <option :value="null">All Types</option>
@@ -19,6 +21,7 @@
 
             <button @click="applyFilters">Filter</button>
             <button @click="clearFilters">Clear</button>
+
         </div>
 
         <table v-if="activities.length" class="activities-table">
@@ -48,6 +51,14 @@
         <div v-else class="empty">
             <p>No activities found.</p>
         </div>
+
+
+        <CreateActivityModal
+            :visible="showCreateModal" 
+            :activityTypes="activityTypes" 
+            @close="showCreateModal = false"
+            @update="fetchData()"
+        />
     </div>
 </template>
 
@@ -58,9 +69,12 @@ import { useAuthStore } from '../../store/auth.store'
 import type { ActivityLogResponse, ActivityTypeResponse, ActivityLogFilterRequest } from '../../types/activity'
 import { deleteActivityLog } from '../../service/activity'
 import { toast } from 'vue3-toastify'
+import CreateActivityModal from './modal/CreateActivityModal.vue'
 
 const activityStore = useActivityStore()
 const authStore = useAuthStore()
+
+const showCreateModal = ref(false)
 
 const activities = ref<ActivityLogResponse[]>([])
 const activityTypes = ref<ActivityTypeResponse[]>([])
@@ -159,6 +173,10 @@ onMounted(fetchData)
 
 .activities-top button:hover {
     background-color: #16AF50;
+}
+
+.create-btn{
+    margin-right: auto;
 }
 
 .activities-table {
