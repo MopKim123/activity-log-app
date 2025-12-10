@@ -2,6 +2,8 @@
     <nav class="navbar">
         <div class="greeting">Welcome Back, {{ authStore.username }}!</div>
         <ul class="nav-links"> 
+            <li><button @click="home">Home</button></li>
+            <li><button @click="dashboard">Dashboard</button></li>
             <li><button @click="logout">Logout</button></li>
         </ul>
     </nav>
@@ -20,6 +22,14 @@ function logout() {
     authStore.clear()
     toast.info("Logged out")
     router.push("/")
+}
+
+function dashboard() { 
+    router.push("/dashboard")
+}
+
+function home() { 
+    router.push("/home")
 }
 
 onMounted(() => {
