@@ -38,11 +38,7 @@ const router = useRouter()
 const request = ref<UserRequest>({
     username: '',
     password: ''
-})
-
-onMounted(() => {
-    authStore.clear()
-})
+}) 
 
 function login() {
     if (!request.value.username.trim() || !request.value.password.trim()) {

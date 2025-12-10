@@ -9,7 +9,7 @@ export async function getActivityLogsByUser(
 ): Promise<ActivityLogResponse[]> {
     try {
         const res = await axios.get<ActivityLogResponse[]>(
-            `${API_BASE_URL}/user/${userId}`,
+            `${API_BASE_URL}/logs/user/${userId}`,
             { params: filter }
         )
         return res.data
@@ -21,7 +21,7 @@ export async function getActivityLogsByUser(
 export async function createActivityLog(request: ActivityLogRequest): Promise<ActivityLogResponse> {
     try {
         const res = await axios.post<ActivityLogResponse>(
-            `${API_BASE_URL}/activity-log`,
+            `${API_BASE_URL}/logs`,
             request
         )
         return res.data
@@ -33,7 +33,7 @@ export async function createActivityLog(request: ActivityLogRequest): Promise<Ac
 export async function updateActivityLog(id: number, description?: string): Promise<ActivityLogResponse> {
     try {
         const res = await axios.put<ActivityLogResponse>(
-            `${API_BASE_URL}/activity-log/${id}`,
+            `${API_BASE_URL}/logs/${id}`,
             null,
             { params: { description } }
         )
@@ -45,7 +45,7 @@ export async function updateActivityLog(id: number, description?: string): Promi
 
 export async function deleteActivityLog(id: number): Promise<void> {
     try {
-        await axios.delete(`${API_BASE_URL}/activity-log/${id}`)
+        await axios.delete(`${API_BASE_URL}/logs/${id}`)
     } catch (error: any) {
         throw new Error(error.response?.data?.message || "Failed to delete activity log")
     }
@@ -53,7 +53,7 @@ export async function deleteActivityLog(id: number): Promise<void> {
 
 export async function getAllActivityTypes(): Promise<ActivityTypeResponse[]> {
     try {
-        const res = await axios.get<ActivityTypeResponse[]>(`${API_BASE_URL}/activity-log`)
+        const res = await axios.get<ActivityTypeResponse[]>(`${API_BASE_URL}/activity-types`)
         return res.data
     } catch (error: any) {
         throw new Error(error.response?.data?.message || "Failed to fetch activity types")
