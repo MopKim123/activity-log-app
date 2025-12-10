@@ -4,7 +4,7 @@
 
         <div class="activities-top">
             <button class="create-btn" @click="showCreateModal = true">Create Activity</button>
-            
+
             <!-- Activity Type Filter -->
             <select v-model="selectedTypeId">
                 <option :value="null">All Types</option>
@@ -59,6 +59,13 @@
             @close="showCreateModal = false"
             @update="fetchData()"
         />
+        <EditActivityModal
+            :visible="showEditModal" 
+            :activity="selectedActivity"
+            :activityTypes="activityTypes" 
+            @close="showEditModal = false"
+            @update="fetchData()"
+        />
     </div>
 </template>
 
@@ -70,13 +77,16 @@ import type { ActivityLogResponse, ActivityTypeResponse, ActivityLogFilterReques
 import { deleteActivityLog } from '../../service/activity'
 import { toast } from 'vue3-toastify'
 import CreateActivityModal from './modal/CreateActivityModal.vue'
+import EditActivityModal from './modal/EditActivityModal.vue'
 
 const activityStore = useActivityStore()
 const authStore = useAuthStore()
 
 const showCreateModal = ref(false)
+const showEditModal = ref(false)
 
 const activities = ref<ActivityLogResponse[]>([])
+const selectedActivity = ref<ActivityLogResponse>({})
 const activityTypes = ref<ActivityTypeResponse[]>([])
 
 // Filters
@@ -106,7 +116,8 @@ async function fetchData(filter?: ActivityLogFilterRequest) {
 }
 
 function editActivity(activity: ActivityLogResponse) {
-    toast.info(`Edit activity ${activity.id} (implement modal/form)`)
+    selectedActivity.value = activity
+    showEditModal.value = true
 }
 
 async function deleteActivity(id: number | undefined) {

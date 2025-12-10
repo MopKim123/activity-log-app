@@ -31,12 +31,12 @@ export async function createActivityLog(request: ActivityLogRequest): Promise<Ac
     }
 }
 
-export async function updateActivityLog(id: number, description?: string): Promise<ActivityLogResponse> {
+export async function updateActivityLog(id: number, typeId: number, description?: string): Promise<ActivityLogResponse> {
     try {
         const res = await axios.put<ActivityLogResponse>(
             `${API_BASE_URL}/logs/${id}`,
             null,
-            { params: { description } }
+            { params: { description, typeId } }
         )
         return res.data
     } catch (error: any) {

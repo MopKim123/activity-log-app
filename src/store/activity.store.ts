@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'  
 import type { ActivityLogFilterRequest, ActivityLogRequest, ActivityLogResponse, ActivityTypeResponse } from '../types/activity'
-import { createActivityLog, getActivityLogsByUser, getAllActivityTypes } from '../service/activity'
+import { createActivityLog, getActivityLogsByUser, getAllActivityTypes, updateActivityLog } from '../service/activity'
 
 export const useActivityStore = defineStore('activity', {
     state: () => ({
@@ -36,6 +36,19 @@ export const useActivityStore = defineStore('activity', {
                 console.error(`Activities not found! ${err}`) 
             }
         },  
+        async updateActivity(activityId: number, typeId: number, description: string) {
+            try {
+                const updated = await updateActivityLog(activityId, typeId, description)
+
+                const index = this.activites.findIndex(a => a.id === activityId)
+                if (index !== -1) {
+                    this.activites[index]!.description = updated.description
+                    this.activites[index]!.activityTypeId = updated.activityTypeId
+                }
+            } catch (err) {
+                console.error(`Failed to update activity: ${err}`)
+            }
+        },
         setActivityTypes(data: ActivityTypeResponse[]) {  
             this.activiteTypes = data 
         }, 
