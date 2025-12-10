@@ -27,16 +27,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { UserRequest } from '../../types/auth'
 import { toast } from 'vue3-toastify'
 import { useAuthStore } from '../../store/auth.store'
 
+const authStore = useAuthStore()
 const router = useRouter()
 const request = ref<UserRequest>({
     username: '',
     password: ''
+})
+
+onMounted(() => {
+    authStore.clear()
 })
 
 function login() {
@@ -45,9 +50,7 @@ function login() {
         return
     }
 
-    const authStore = useAuthStore()
     authStore.login(request.value, router)
-    toast.success(`Logged in as ${authStore.username}`)
 }
 
 function goRegister() {
