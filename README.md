@@ -1,125 +1,102 @@
-# Activity Log API
+# Student Activity Tracker Frontend
 
-A simple Spring Boot + Kotlin API for students to log their activities.
+A Vue 3 + Vite frontend for managing student activity logs. Users can login, register, view, create, edit, and delete activity logs.  
+
+---
 
 ## Features
 
-- User registration and login  
-- Create, view, update, and delete activity logs  
-- Filter logs by **type** and **date**  
+- User authentication (login & registration)  
+- View activity logs in a table with filtering by **type** and **date**  
+- Create, edit, and delete activity logs  
+- Responsive design for desktop and mobile  
 
 ---
 
 ## Tech Stack
 
-- Kotlin  
-- Spring Boot  
-- Spring Data JPA  
-- PostgreSQL  
-- Flyway (for database migrations)  
+- Vue 3  
+- Vite  
+- TypeScript  
+- Pinia (state management)  
+- Vue Router  
+- Axios (API requests)  
+- vue3-toastify (notifications)  
 
 ---
 
-## Database Setup
+## Project Setup
 
-1. Install PostgreSQL.  
-2. Create a database:
+### 1. Clone the repository
 
-```sql
-CREATE DATABASE activity_log;
+```bash
+git clone <your-repo-url>
+cd <frontend-folder>
 ```
 
-3. Configure application.properties (or application.yml) with your database connection:
+### 2. Install dependencies
 
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/activity_log
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=none
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-
-spring.flyway.enabled=true
-spring.flyway.locations=classpath:db/migration
+```bash
+npm install
 ```
 
-4. Flyway will automatically run migrations on startup. Ensure your migration scripts are under src/main/resources/db/migration.
+### 3. Configure environment variables
+Create a .env file at the root:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+Replace the URL with your backend URL if different.
+
+### 4. Run the development server
+
+```bash
+npm run dev
+```
+
+### 5. Build for production
+
+```bash
+npm run build
+```
+
+### 6. Preview production build
+
+```bash
+npm run preview
+```
 
 ---
 
-## Running the Project
-
-## Using IntelliJ / IDE
-
-1. Open the project.
-2. Ensure JDK 17+ is configured.
-3. Run the main application class ActivityLogApiApplication.kt.
-
-## Using Command Line
-
-1. Build the project:
+## Folder Structure
 
 ```bash
-./gradlew build
+src/
+├─ assets/        # Images, icons, and styles
+├─ components/    # Reusable components (modals, navbar)
+├─ router/        # Vue Router configuration
+├─ store/         # Pinia stores
+├─ service/       # API service functions
+├─ types/         # TypeScript interfaces/types
+└─ views/         # Page components
 ```
-
-2. Run the application
-
-```bash
-./gradlew bootRun
-```
-
-The API will start on http://localhost:8080
 
 ---
 
-## API Endpoints
-
-## Users
-- POST /users/register - Register a new user
-- POST /users/login - Login with username and password
-- GET /users/{id} - Get user by ID
-
-## Activity Types
-- GET /activity-types - Get all activity types
-- GET /activity-types/{id} - Get activity type by ID
-
-
-## Activity Logs
-- GET /logs - Get all logs
-- GET /logs/{id} - Get log by ID
-- GET /logs/user/{id} - Get logs by user (Optional query params for filter: activityTypeId, startDate, endDate)
-- POST /logs - Create new activity log
-- PUT /logs/{id} - Update a log description and/or type
-- DELETE /logs/{id} - Delete a log by ID
-
----
-
-## Example Request
-
-Create a log
-
-```bash
-    POST http://localhost:8080/logs
-    Content-Type: application/json
-
-{
-    "userId": 1
-    "activityTypeId": 1
-    "description": "Sample activity description"
-}
-```
-
-Filter logs by user, type, and date
-
-```bash
-    GET http://localhost:8080/logs/user/1?activityTypeId=2&startDate=2025-12-01T00:00:00&endDate=2025-12-10T23:59:59
-```
+## Usage
+- Start the backend API.
+- Run the frontend development server.
+- Register a new user or login.
+- Manage activities through the dashboard.
 
 ---
 
 ## Notes
-
-- Passwords are stored in plain text for simplicity
-- DTO validations use @NotNull and @NotBlank
-- Logs can be activity type, date range, and user
+- Ensure CORS is configured properly on the backend for local development.
+- Notifications appear using vue3-toastify.
+- The frontend expects the backend endpoints to match the following paths:
+    - /users/login (POST)
+    - /users/register (POST)
+    - /activities (GET, POST, PUT, DELETE)
+    - /activity-types (GET)
