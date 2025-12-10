@@ -5,18 +5,20 @@ import { loginUser } from '../service/auth'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        userId: Number(localStorage.getItem('userId')) || null, 
-        username: localStorage.getItem('username'),  
+        userId: Number(localStorage.getItem('userId')) || 0, 
+        username: localStorage.getItem('username') || '',  
     }),
 
     actions: {
         clear() {
-            this.userId = null
+            this.userId = 0
             this.username = ''
             localStorage.removeItem('userId')
             localStorage.removeItem('username')
         },  
         setUser(user: LoginResponse) { 
+            this.userId = user.id
+            this.username = user.username
             localStorage.setItem("username", user.username) 
             localStorage.setItem("userId", user.id.toString())
         }, 

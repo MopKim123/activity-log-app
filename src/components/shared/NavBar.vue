@@ -1,10 +1,7 @@
 <template>
     <nav class="navbar">
         <div class="greeting">Welcome Back, {{ authStore.username }}!</div>
-        <ul class="nav-links">
-            <!-- <li><router-link to="/home">Home</router-link></li>
-            <li><router-link to="/activities">Activities</router-link></li>
-            <li><router-link to="/profile">Profile</router-link></li> -->
+        <ul class="nav-links"> 
             <li><button @click="logout">Logout</button></li>
         </ul>
     </nav>
