@@ -64,6 +64,12 @@
             :activity="selectedActivity"
             :activityTypes="activityTypes" 
             @close="showEditModal = false"
+            @update=""
+        />
+        <DeleteActivityModal
+            :visible="showDeleteModal" 
+            :activityId="selectedActivityId" 
+            @close="showDeleteModal = false"
             @update="fetchData()"
         />
     </div>
@@ -73,20 +79,21 @@
 import { onMounted, ref } from 'vue' 
 import { useActivityStore } from '../../store/activity.store'
 import { useAuthStore } from '../../store/auth.store'
-import type { ActivityLogResponse, ActivityTypeResponse, ActivityLogFilterRequest } from '../../types/activity'
-import { deleteActivityLog } from '../../service/activity'
-import { toast } from 'vue3-toastify'
+import type { ActivityLogResponse, ActivityTypeResponse, ActivityLogFilterRequest } from '../../types/activity' 
 import CreateActivityModal from './modal/CreateActivityModal.vue'
 import EditActivityModal from './modal/EditActivityModal.vue'
+import DeleteActivityModal from './modal/DeleteActivityModal.vue'
 
 const activityStore = useActivityStore()
 const authStore = useAuthStore()
 
 const showCreateModal = ref(false)
 const showEditModal = ref(false)
+const showDeleteModal = ref(false)
 
 const activities = ref<ActivityLogResponse[]>([])
 const selectedActivity = ref<ActivityLogResponse>({})
+const selectedActivityId = ref(0)
 const activityTypes = ref<ActivityTypeResponse[]>([])
 
 // Filters
@@ -122,13 +129,8 @@ function editActivity(activity: ActivityLogResponse) {
 
 async function deleteActivity(id: number | undefined) {
     if (!id) return
-    try {
-        await deleteActivityLog(id)
-        toast.success(`Activity ${id} deleted`)
-        activities.value = activities.value.filter(a => a.id !== id)
-    } catch (err) {
-        toast.error(`Failed to delete activity: ${err}`)
-    }
+    selectedActivityId.value = id
+    showDeleteModal.value = true
 }
 
 function applyFilters() {

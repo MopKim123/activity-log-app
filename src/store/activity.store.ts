@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'  
 import type { ActivityLogFilterRequest, ActivityLogRequest, ActivityLogResponse, ActivityTypeResponse } from '../types/activity'
-import { createActivityLog, getActivityLogsByUser, getAllActivityTypes, updateActivityLog } from '../service/activity'
+import { createActivityLog, deleteActivityLog, getActivityLogsByUser, getAllActivityTypes, updateActivityLog } from '../service/activity'
 
 export const useActivityStore = defineStore('activity', {
     state: () => ({
@@ -47,6 +47,15 @@ export const useActivityStore = defineStore('activity', {
                 }
             } catch (err) {
                 console.error(`Failed to update activity: ${err}`)
+            }
+        },
+        async deleteActivity(id: number) {
+            try {
+                await deleteActivityLog(id)
+                this.activites = this.activites.filter(a => a.id !== id)
+            } catch (err) {
+                console.error(`Failed to delete activity: ${err}`)
+                throw err
             }
         },
         setActivityTypes(data: ActivityTypeResponse[]) {  
