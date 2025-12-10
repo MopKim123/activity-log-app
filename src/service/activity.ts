@@ -3,6 +3,12 @@ import type { ActivityLogFilterRequest, ActivityLogRequest, ActivityLogResponse,
 
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
+// Helper to get JWT from localStorage
+function getAuthHeader() {
+    const token = localStorage.getItem("token")
+    return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
 export async function getActivityLogsByUser(
     userId: number,
     filter?: ActivityLogFilterRequest
@@ -10,7 +16,10 @@ export async function getActivityLogsByUser(
     try {
         const res = await axios.get<ActivityLogResponse[]>(
             `${API_BASE_URL}/logs/user/${userId}`,
-            { params: filter }
+            { 
+                params: filter,
+                headers: getAuthHeader()
+            }
         )
         return res.data
     } catch (error: any) {
@@ -19,11 +28,11 @@ export async function getActivityLogsByUser(
 }
 
 export async function createActivityLog(request: ActivityLogRequest): Promise<ActivityLogResponse> {
-    console.log("create request",request)
     try {
         const res = await axios.post<ActivityLogResponse>(
             `${API_BASE_URL}/logs`,
-            request
+            request,
+            { headers: getAuthHeader() }
         )
         return res.data
     } catch (error: any) {
@@ -36,7 +45,10 @@ export async function updateActivityLog(id: number, typeId: number, description?
         const res = await axios.put<ActivityLogResponse>(
             `${API_BASE_URL}/logs/${id}`,
             null,
-            { params: { description, typeId } }
+            { 
+                params: { description, typeId },
+                headers: getAuthHeader()
+            }
         )
         return res.data
     } catch (error: any) {
@@ -46,12 +58,13 @@ export async function updateActivityLog(id: number, typeId: number, description?
 
 export async function deleteActivityLog(id: number): Promise<void> {
     try {
-        await axios.delete(`${API_BASE_URL}/logs/${id}`)
+        await axios.delete(`${API_BASE_URL}/logs/${id}`, { headers: getAuthHeader() })
     } catch (error: any) {
         throw new Error(error.response?.data?.message || "Failed to delete activity log")
     }
 }
 
+// Activity types are public, no JWT needed
 export async function getAllActivityTypes(): Promise<ActivityTypeResponse[]> {
     try {
         const res = await axios.get<ActivityTypeResponse[]>(`${API_BASE_URL}/activity-types`)

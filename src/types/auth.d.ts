@@ -13,4 +13,6 @@ export interface UserRequest {
 export interface LoginResponse {
   id: number
   username: string
+  email: string
+  token: string
 }

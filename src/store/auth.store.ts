@@ -20,12 +20,12 @@ export const useAuthStore = defineStore('auth', {
             this.userId = user.id
             this.username = user.username
             localStorage.setItem("username", user.username) 
+            localStorage.setItem("token", user.token) 
             localStorage.setItem("userId", user.id.toString())
         }, 
         async login(user: UserRequest, router: Router) { 
             try {   
                 const data = await loginUser(user);    
-                console.log("user",data)  
                 this.setUser(data)    
                 router.push('/home')
             } catch (err) {

@@ -21,7 +21,6 @@ export const useActivityStore = defineStore('activity', {
         async getMyActivities(userId: number, filter?: ActivityLogFilterRequest) { 
             try {   
                 const data = await getActivityLogsByUser(userId, filter);    
-                console.log("activites",data)  
                 this.setActivities(data)    
             } catch (err) {
                 console.error(`Activities not found! ${err}`) 
@@ -30,7 +29,6 @@ export const useActivityStore = defineStore('activity', {
         async createActivity(request: ActivityLogRequest) { 
             try {   
                 const data = await createActivityLog(request);    
-                console.log("activites",data)  
                 this.activites.push(data) 
             } catch (err) {
                 console.error(`Activities not found! ${err}`) 
@@ -64,7 +62,6 @@ export const useActivityStore = defineStore('activity', {
         async getActivityTypes() { 
             try {   
                 const data = await getAllActivityTypes();    
-                console.log("types",data)  
                 this.setActivityTypes(data)    
             } catch (err) {
                 console.error(`Activity types not found! ${err}`) 
